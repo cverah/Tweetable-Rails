@@ -1,0 +1,110 @@
+<div class="section-xs">
+  <h2 class="center-text">Profile</h2>
+  <div class="container-lg">
+    <div class="center-text mb-4">
+      <div>
+      <% if @user.avatar.attached? %>
+          <%= image_tag( @user.avatar, alt: "avatar-img", style:"margin: auto", size: "100x100", class:"avatar-img")%>
+          <% end %>
+      </div>
+      <strong class="text-1.3rem"><%= @user.name %></strong>
+      <p><%= @user.username %></p>
+      <p class="mb-4"><%= @user.created_at.strftime("%B %e, %Y") %></p>
+      <%= link_to  "Edit Profile", edit_user_registration_path, class:"button button--primary fit-content", style:"margin: auto" %>
+    </div>
+
+
+    <div class="profile-buttons">
+      <button id="view-tweets" onclick="mostrar_tweets();">Tweets (<%= @user.tweets.count%>) </button>
+      <button id="view-likes" onclick="mostrar_likes();">Likes (<%= @user.likes.count %>) </button>
+    </div>
+    <div id="tweets-user" style="display:block">
+      <%= render @user %>
+    </div>
+
+    <div id="likes-user" style="display:none">
+      <% @user.likes.each do |like| %>
+        <% tweet = like.tweet %>
+        <div class="tweets mb-4">
+          <div class="tweet_header">
+            <div>
+              <% if tweet.user.avatar.attached? %>
+                <%= image_tag( tweet.user.avatar, alt: "avatar-img", class:"avatar-img" )%>
+              <% end %>
+            </div>
+            <div class="tweet_header--content">
+              <div class="flex gap-4">
+                <strong>
+                  <%= link_to profile_path(user_id: tweet.user.id), class:"black text-1.3rem" do %>
+                    <%= tweet.user.name %>
+                  <% end %>
+                </strong>
+                <p class="primary-500">
+                  <%= tweet.user.username %>
+                </p>
+              </div>
+              <%# sacar tiempo que ha pasado %>
+              <% 
+                date_creation = Time.zone.parse(like.tweet.created_at.to_s)
+                time_passed = time_ago_in_words(date_creation, include_seconds: true)       
+              %>
+              <p><%= time_passed %></p>
+            </div>
+          </div>
+          <p><%= like.tweet.body %></p>
+          <div class="tweet_footer">
+            <div class="tweet_footer--content">
+              <% if policy(User).admin? || policy(like.tweet).action_tweet? %>
+                <%# edit %>
+                <%= link_to edit_tweet_path(like.tweet) do %>
+                  <%= image_tag "icons/pen-to-square-regular.svg", alt:"icon-pencil", size: "30x30" %>    
+                <% end %>
+                <%# destroy %>
+                <%= link_to tweet_path(like.tweet), class:"", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
+                  <%= image_tag "icons/trash-solid.svg", alt:"icon-pencil", size: "30x30" %>    
+                <% end %>
+              <% end %>
+            </div>
+            <div class="tweet_footer--content">
+              <div class="tweet_footer--option">
+                <%# coments %>
+                <%= link_to tweet_path(like.tweet.id) do %>
+                  <%= image_tag "icons/comment-regular.svg", alt:"icon-comment", size: "30x30" %>    
+                <% end %>
+                <p><%= like.tweet.replies_count %></p>
+              </div>
+              <div class="tweet_footer--option">
+                <%# likes %>
+                <%= link_to like_dislike_path(tweet_id: like.tweet.id), method: :post do %>
+                  <% if current_user.nil? %>
+                    <%= image_tag "icons/heart-regular.svg", alt:"icon-love", size: "30x30" %>
+                  <% else %>
+                    <% if current_user.likes.exists?(tweet: like.tweet) %>
+                      <%= image_tag "icons/heart-solid.svg", alt:"icon-love", size: "30x30" %>   
+                    <% else %>
+                      <%= image_tag "icons/heart-regular.svg", alt:"icon-love", size: "30x30" %>  
+                    <% end %>
+                  <% end %>
+                <% end %>  
+                <p><%= like.tweet.likes_count %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  function mostrar_likes() {
+    document.getElementById('likes-user').style.display = "block";
+    document.getElementById('tweets-user').style.display = "none";
+  }
+  function mostrar_tweets() {
+    document.getElementById('tweets-user').style.display = "block";
+    document.getElementById('likes-user').style.display = "none";
+  }
+</script>
+
+    
