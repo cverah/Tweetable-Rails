@@ -1,0 +1,41 @@
+<div class="section-xs">
+  <h2 class="center-text mb-4">Sign in to your account</h2>
+  <div class="container-lg", style="background-color: white">
+    
+    <div style="background-color: white">
+      <p class="center-text text-1.3rem mb-4">Continue con github</p>
+      <%- if devise_mapping.omniauthable? %>
+        <%- resource_class.omniauth_providers.each do |provider| %>
+          <%= button_to "#{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "button button--secondary mb-4" %>
+        <% end %>
+      <% end %>
+      <p class="center-text text-1.3rem mb-4">OR</p>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="field mb-4">
+          <strong class="text-1rem"><%= f.label :email %><br /></strong>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class:"input input__container"%>
+        </div>
+
+        <div class="field mb-4">
+          <strong class="text-1rem"><%= f.label :password %><br /></strong>
+          <%= f.password_field :password, autocomplete: "current-password", class:"input input__container"%>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="field mb-4">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+          </div>
+        <% end %>
+
+        <div class="actions mb-4">
+          <%= f.submit "SIGN IN", class:"button button--primary button--lg" %>
+        </div>
+      <% end %>
+      <div class="center-text text-1.3rem mb-4">
+        <strong><%= render "devise/shared/links" %></strong>
+      </div>
+      
+    </div>
+  </div>
+</div>
