@@ -1,0 +1,26 @@
+<%= form_with(model: tweet) do |form| %>
+  <% if tweet.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(tweet.errors.count, "error") %> prohibited this tweet from being saved:</h2>
+
+      <ul>
+        <% tweet.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.text_area :body,  size: "70x4", class:"input input__container" %>
+  </div>
+
+  <div>
+    <%= form.hidden_field :replied_to_id %>
+    <div>
+    <%= form.submit class:"uppercase button button--primary mb-4" %>
+  </div>
+  </div>
+
+  
+<% end %>

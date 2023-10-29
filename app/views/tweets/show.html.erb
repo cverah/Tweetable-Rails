@@ -1,0 +1,20 @@
+<div class="section-xs">
+  <h2 class="center-text"> Tweet Details </h2>
+  <div class="container-lg">
+    <%= render @tweet %>
+    <hr class="hr">
+    <% if policy(User).admin? || policy(User).member? %>
+      <%= render "tweets/form",  tweet: Tweet.new(replied_to: @tweet) %>
+    <% end %>
+    <%# redirect_to_path: tweet_path(@tweet.id)} %>
+    <%# <%= render "tweets/form", tweet: Tweet.new, redirect_to_path: custom_path %>
+    <% @tweet.retweets.each do |tweet| %>
+      <%= render tweet %>
+    <% end %>
+
+    <div>
+      <%# <%= link_to "Edit this tweet", edit_tweet_path(@tweet) %>
+      <%= link_to "Back to tweets", root_path, class:"button button--secondary"%>
+    </div>
+  </div>
+</div>
