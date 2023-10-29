@@ -3,9 +3,13 @@
   <div class="container-lg", style="background-color: white">
   
     <div style="background-color: white">
-      <p class="center-text">Continue con github</p>
-      <p class="center-text">boton de github</p>
-      <p class="center-text mb-4">OR</p>
+      <p class="center-text text-1.3rem mb-4">Continue con github</p>
+      <%- if devise_mapping.omniauthable? %>
+        <%- resource_class.omniauth_providers.each do |provider| %>
+          <%= button_to "#{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "button button--secondary mb-4" %>
+        <% end %>
+      <% end %>
+      <p class="center-text text-1.3rem mb-4">OR</p>
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
