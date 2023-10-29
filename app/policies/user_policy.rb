@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
@@ -5,10 +7,12 @@ class UserPolicy < ApplicationPolicy
       scope.all
     end
   end
+
   def admin?
-    user.admin? unless user.nil?
+    user&.admin?
   end
+
   def member?
-    user.member? unless user.nil?
+    user&.member?
   end
 end

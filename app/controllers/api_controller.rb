@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ApiController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound do |e|
     render json: { message: e.message }, status: :not_found
-  end  
+  end
 
   include ActionController::HttpAuthentication::Token::ControllerMethods
   before_action :authorize
@@ -23,7 +25,7 @@ class ApiController < ActionController::API
 
   def authenticate_token
     authenticate_with_http_token do |token, _options|
-      ApiUser.find_by(token: token)
+      ApiUser.find_by(token:)
     end
   end
 end

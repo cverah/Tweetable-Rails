@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class TweetsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :set_tweet, only: %i[ show edit update destroy ]
+  skip_before_action :authenticate_user!, only: %i[index show]
+  before_action :set_tweet, only: %i[show edit update destroy]
 
   # GET /tweets
   def index
@@ -8,8 +10,7 @@ class TweetsController < ApplicationController
   end
 
   # GET /tweets/1
-  def show
-  end
+  def show; end
 
   # GET /tweets/new
   def new
@@ -25,13 +26,13 @@ class TweetsController < ApplicationController
   def create
     @tweet = Tweet.new(tweet_params)
     @tweet.user = current_user
-    if  @tweet.replied_to_id.nil?
-      ruta = root_path
-    else
-      ruta = tweet_path(@tweet.replied_to_id)
-    end
+    ruta = if @tweet.replied_to_id.nil?
+             root_path
+           else
+             tweet_path(@tweet.replied_to_id)
+           end
     if @tweet.save
-      redirect_to ruta, notice: "Tweet was successfully created."
+      redirect_to ruta, notice: 'Tweet was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -40,13 +41,13 @@ class TweetsController < ApplicationController
   # PATCH/PUT /tweets/1
   def update
     authorize @tweet
-    if  @tweet.replied_to_id.nil?
-      ruta = root_path
-    else
-      ruta = tweet_path(@tweet.replied_to_id)
-    end
+    ruta = if @tweet.replied_to_id.nil?
+             root_path
+           else
+             tweet_path(@tweet.replied_to_id)
+           end
     if @tweet.update(tweet_params)
-      redirect_to ruta, notice: "Tweet was successfully updated."
+      redirect_to ruta, notice: 'Tweet was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -56,17 +57,18 @@ class TweetsController < ApplicationController
   def destroy
     authorize @tweet
     @tweet.destroy
-    redirect_to root_path, notice: "Tweet was successfully destroyed."
+    redirect_to root_path, notice: 'Tweet was successfully destroyed.'
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_tweet
-      @tweet = Tweet.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def tweet_params
-      params.require(:tweet).permit(:body, :replied_to_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_tweet
+    @tweet = Tweet.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def tweet_params
+    params.require(:tweet).permit(:body, :replied_to_id)
+  end
 end

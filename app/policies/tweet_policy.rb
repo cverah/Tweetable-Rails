@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TweetPolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
@@ -5,19 +7,20 @@ class TweetPolicy < ApplicationPolicy
       scope.all
     end
   end
+
   def edit?
     # puts "AQUIII EDITTTTT"
     # p user
     # p tweet_user
-    return (user.present? && user == tweet_user) || user.admin?
+    (user.present? && user == tweet_user) || user.admin?
   end
 
   def update?
-    return (user.present? && user == tweet_user) || user.admin?
+    (user.present? && user == tweet_user) || user.admin?
   end
 
   def destroy?
-    return (user.present? && user == tweet_user) || user.admin?
+    (user.present? && user == tweet_user) || user.admin?
   end
 
   def action_tweet?
@@ -31,10 +34,10 @@ class TweetPolicy < ApplicationPolicy
   end
 
   private
+
   def tweet_user
     # p record saca el id del tweet
     # haciendo con asociacion del modelo del tweet se va al user con user
     record.user
   end
- 
 end
