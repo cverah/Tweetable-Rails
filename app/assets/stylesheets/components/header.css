@@ -1,0 +1,115 @@
+.header {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 36px;
+  /* var de la clase color.css en global se llama con var por la instancia de la calse :root definida alli */
+  background: var(--green-80);
+  text-align: center;
+  color: var(--text);
+  padding: 8px 0;
+}
+
+.header.bg-secondary-dark {
+  background-color: var(--secondary-dark);
+}
+
+.header__logo {
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.navbar-mobile {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar--links {
+  display: flex;
+  /* para que ocupe todo el espacio del li y borre el . */
+  padding: 0;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.navbar--links .link {
+  text-decoration: none;
+  color: var(--green-900);
+  /* 1em 16px
+  arriba abajo 0.5em(8px) y 0.75em(12px) izquierda y derecha */
+  padding: 14px 16px;
+  border-radius: 4px;
+  display: block;
+  line-height: 1rem;
+}
+
+.navbar--links .link:hover {
+  background-color: var(--green-800);
+  color: var(--white);
+  cursor: pointer;
+}
+
+/* #media querie hamburguesa */
+.hamb {
+  display: none;
+}
+
+.hamb:hover {
+  cursor: pointer;
+}
+
+/* lo envolvemos en un div para que los ancors ocupen el 100% del espacio */
+.menu-mobile {
+  width: 100%;
+}
+
+.navbar--links--mobile {
+  flex-direction: column;
+  padding: 0;
+  align-items: center;
+  gap: 0.3em;
+  display: none;
+  margin: 0;
+}
+
+.navbar--links--mobile .link {
+  display: block;
+  text-decoration: none;
+  color: var(--green-900);
+  padding: 0.5em 0.75em;
+  border-radius: 4px;
+  line-height: 1rem;
+}
+
+.navbar--links--mobile .link:hover {
+  background-color: var(--green-200);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 857px) {
+  .navbar--links {
+    display: none;
+  }
+
+  .hamb {
+    display: block;
+    margin-left: auto;
+  }
+
+  .navbar-mobile {
+    display: flex;
+  }
+
+  .navbar--links--mobile--open {
+    display: block;
+  }
+}
