@@ -11,6 +11,85 @@
   </head>
 
   <body>
+    <header class="header">
+      <div class="section-xs">
+        <div class="container-lg">
+          <!-- <h1 class="heading-md semi-bold header__logo">HEADER</h1> -->
+          <nav class="navbar">
+            <%= link_to root_path, class:"block" do %>
+              <h1 class="heading--sm medium">{ Tweetable }</h1>
+            <% end %>
+            <!-- # hamburguesa media querie data trubo para vuelva ejecutarse el icon en javascript-->
+            <%= image_tag "icons/hamb.svg", alt:"icon-hamb", class: "hamb", data: { "turbo-frame": "false" }, onclick: "showMenu()" %>
+          
+            
+            <ul class="navbar--links list-style-none">
+              <% if user_signed_in? %>
+                <p>Welcome: <%= current_user.name %> </p>
+               
+                <%=link_to "Profile", profile_path(user_id: current_user.id), class:"link text-xl text-decoration-none" %>
+                <%=link_to "Edit Profile", edit_user_registration_path, class:"link text-xl text-decoration-none" %>
+                <%= link_to  "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class:"link text-xl text-decoration-none" %>
+              <% else %>
+                <%=link_to "Sign in", new_user_session_path, class:"link text-xl text-decoration-none" %>
+                <%=link_to "Sign up", new_user_registration_path, class:"link text-xl text-decoration-none"%>
+              <% end %>
+            </ul>
+          </nav>
+
+          <!-- nav para mobile  -->
+          <nav class="navbar-mobile">
+            <div class="menu-mobile">
+              <% if user_signed_in? %>
+                <p>Welcome: <%= current_user.name %> </p>
+                <ul class="navbar--links--mobile list-style-none">
+              
+                  <%=link_to "Profile", profile_path(user_id: current_user.id), class:"link text-xl text-decoration-none" %>
+                  <%=link_to "Edit Profile", edit_user_registration_path, class:"link text-xl text-decoration-none" %>
+                  <%= link_to  "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class:"link text-xl text-decoration-none" %>
+                </ul>
+              <% else %>
+                <ul class="navbar--links--mobile list-style-none">
+                  <%=link_to "Sign in", new_user_session_path, class:"link text-xl text-decoration-none" %>
+                  <%=link_to "Sign up", new_user_registration_path, class:"link text-xl text-decoration-none"%>
+                </ul>
+              <% end %>
+            </div>
+          </nav>
+          </div>
+    </div>
+  </header>
+    <div class="section-xs">
+      <div class="container">
+        <div class="content-notice">
+          <p class="notice" style="color: green"><%= notice %></p>
+        </div>
+        <div class="content-alert">
+          <p class="alert" style="color: red"><%= alert %></p>
+        </div>
+      </div>
+    </div>
     <%= yield %>
+    <footer class="footer">
+      <div class="footer__content">
+        <strong class="center-text">2023 -Codeable</strong>
+        <strong class="center-text">Build with ♥ by</strong>
+        <div class="footer__content--data">
+          <%= link_to "https://github.com/cverah", target: "_blank" do %>
+            <%= image_tag "icons/linkedin.svg", alt:"icon-linkedin", class:"icons-category" %>
+          <% end %>
+          <strong>Cristhian Mario Vera Huamani</strong>
+        </div>
+        </div>
+    </footer>
+
+
+    <%# para el javascript %>
+   <script>
+    function showMenu() {
+      const navBarMobile = document.querySelector(".navbar--links--mobile");
+      navBarMobile.classList.toggle("navbar--links--mobile--open");
+    };
+    </script>
   </body>
 </html>
